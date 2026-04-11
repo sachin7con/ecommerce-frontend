@@ -1,4 +1,5 @@
 import {useState} from "react";
+import axios from "axios";
 
 function Register(){
         const [user, setUser] = useState({
@@ -13,10 +14,15 @@ function Register(){
     function handleSubmit(e){
         e.preventDefault();
 
-    // save in localStorage (temporary)
-    localStorage.setItem("user", JSON.stringify(user));
+    // // save in localStorage (temporary)
+    // localStorage.setItem("user", JSON.stringify(user));
+    // alert("Registered Successfully!");
+    axios.post("http://localhost:5000/api/auth/register", user)
+    .then((res) =>{
+        alert("Registered Successfully");
+    }).catch((err) =>{alert("Error while Registering user");})
+          
 
-    alert("Registered Successfully!");
     }
 
     return(

@@ -1,5 +1,5 @@
 import {useState} from "react";
-
+import axios from "axios";
 
 function Login(){
     const [loginData, setLoginData] = useState({
@@ -16,19 +16,23 @@ function Login(){
     function handleSubmit(e){
         e.preventDefault();
 
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        
-        if(storedUser && 
-            storedUser.email === loginData.email &&
-            storedUser.password === loginData.password
-        ){
+        ////Local storage 
+        // const storedUser = JSON.parse(localStorage.getItem("user"));
+        // if(storedUser && 
+        //     storedUser.email === loginData.email &&
+        //     storedUser.password === loginData.password
+        // ){
+        //     alert("Login Successfull");
+        // }else {
+        //     alert("Invalid credentials")
+        // }
+
+        axios.post("http://localhost:5000/api/auth/login", loginData)
+        .then((res)=>{
             alert("Login Successfull");
-        }else {
-            alert("Invalid credentials")
-        }
-    
-    
-    
+        }).catch((err) =>{
+            alert("invalid credentials")
+        });
     }
 
 
