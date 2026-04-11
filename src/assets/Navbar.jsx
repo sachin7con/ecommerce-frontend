@@ -9,7 +9,10 @@ function Navbar({ cart = [] }){
         <div>
             <Link to="/" >Home</Link> | {" "}
             <Link to="/product">Product</Link> |{" "}
-            <Link to="/cart" >Cart ({cart ? cart.length : 0})</Link>
+            <Link to="/cart" >Cart ({cart ? cart.length : 0})</Link> |{" "}
+
+            <Link to="/login">Login</Link> | {" "}
+            <Link to="/register">Regsiter</Link>
         </div>
 
 

@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart"
 import Navbar from "./assets/Navbar"
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 
 
@@ -26,7 +28,8 @@ function App() {
       <Route path="/" element={<Home />}></Route>
       <Route path="/product" element={<Product cart={cart} setCart={setCart} />}></Route>
       <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />}></Route>
-
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<Register />}></Route>
       </Routes>
       </BrowserRouter>
     </>
