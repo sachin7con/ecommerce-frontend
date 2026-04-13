@@ -21,7 +21,7 @@ function Product({cart, setCart}){
     }
     }
    
-    return(<div style={StyleSheet.container}>
+    return(<div style={styles.container}>
         {products.map((item) => (
             <ProductCard key={item.id} product={item}  addToCart={addToCart} />
         ) )}
@@ -32,7 +32,7 @@ function Product({cart, setCart}){
 const styles = {
     container : {
         display: "flex",
-        flexwrap: "wrap",
+        flexWrap: "wrap",
         gap: "20px",
         padding: "20px",
     },

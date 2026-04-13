@@ -59,7 +59,7 @@ const styles ={
         border: "1px solid #ddd",
         borderRadius: "10px",
         padding: "10px",
-        marginbottom:"10px",
+        marginBottom:"10px",
     },
 
 } 

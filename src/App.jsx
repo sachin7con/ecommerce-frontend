@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart"
-import Navbar from "./assets/Navbar"
+import Navbar from "./components/Navbar"
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
@@ -15,9 +15,13 @@ function App() {
         return savedCart ? JSON.parse(savedCart) : [];
       });  
 
+      const token = localStorage.getItem("token");
+
       useEffect(() =>{
-        localStorage.setItem("cart", JSON.stringify(cart));
-      }, [cart]);
+        if(token){localStorage.setItem(`cart_${token}`, JSON.stringify(cart));
+      }
+        
+      }, [cart, token]);
 
   return (
     <>

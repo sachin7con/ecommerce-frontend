@@ -1,7 +1,10 @@
 import {useState} from "react";
 import axios from "axios";
+import {useNavigate}  from "react-router-dom";
+
 
 function Login(){
+    const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -31,6 +34,7 @@ function Login(){
         .then((res)=>{
             localStorage.setItem("token", res.data.token) // token stored
             alert("Login Successfull");
+            navigate("/");
         }).catch((err) =>{
             alert("invalid credentials")
         });

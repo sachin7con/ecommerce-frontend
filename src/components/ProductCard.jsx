@@ -2,7 +2,7 @@ function ProductCard({product, addToCart}){
 
     return(
         <>
-        <div style={StyleSheet.card}>
+        <div style={styles.card}>
             <h3>{product.title}</h3>
             <p>{product.price}</p>
 
