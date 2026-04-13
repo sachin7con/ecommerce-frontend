@@ -6,7 +6,7 @@ import Cart from "./pages/Cart"
 import Navbar from "./components/Navbar"
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
+import ProtectedRoutes from "./components/ProtectedRoute.jsx";
 
 
 function App() {
@@ -31,7 +31,9 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />}></Route>
       <Route path="/product" element={<Product cart={cart} setCart={setCart} />}></Route>
-      <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />}></Route>
+      <Route path="/cart" element={
+        <ProtectedRoute> <Cart cart={cart} setCart={setCart} />
+        </ProtectedRoute>}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
       </Routes>
