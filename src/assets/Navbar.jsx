@@ -1,5 +1,13 @@
 import {Link } from "react-router-dom";
 function Navbar({ cart = [] }){
+    // Check login state
+    const token = localStorage.getItem("user");
+
+    function handleLogout() {
+        localStorage.removeItem("user");
+        alert("Logged out successfully");
+        window.location.reload();
+    }
 
     return(
         <>
@@ -11,8 +19,10 @@ function Navbar({ cart = [] }){
             <Link to="/product">Product</Link> |{" "}
             <Link to="/cart" >Cart ({cart ? cart.length : 0})</Link> |{" "}
 
-            <Link to="/login">Login</Link> | {" "}
-            <Link to="/register">Regsiter</Link>
+            {token ? (<button onClick={handleLogout} style={styles.btn}>Logout</button>)
+            : (<><Link to="/login">Login</Link> | {" "}
+            <Link to="/register">Regsiter</Link> </>)}
+            
         </div>
 
 
@@ -22,13 +32,17 @@ function Navbar({ cart = [] }){
 }
 
 const styles = {
-    nav : {
-        display: "flex",
-        justifyContent: "space-between",
-        padding : "10px",
-        background: "#eee"
-
-    }
-}
+  nav: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "10px 20px",
+    background: "#eee",
+    alignItems: "center",
+  },
+  btn: {
+    padding: "5px 10px",
+    cursor: "pointer",
+  },
+};
 
 export default Navbar;
