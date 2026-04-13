@@ -29,7 +29,8 @@ function Login(){
 
         axios.post("http://localhost:5000/api/auth/login", loginData)
         .then((res)=>{
-            alert("Login Successfull");
+            localStorage.setItem("token", res.data.token);
+            alert("Login Successful");
         }).catch((err) =>{
             alert("invalid credentials")
         });
