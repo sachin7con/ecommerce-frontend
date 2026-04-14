@@ -30,7 +30,7 @@ function Login(){
         //     alert("Invalid credentials")
         // }
 
-        axios.post("http://localhost:5000/api/auth/login", loginData)
+        axios.post("https://ecommerce-backend-oc9b.onrender.com/api/auth/login", loginData)
         .then((res)=>{
             localStorage.setItem("token", res.data.token) // token stored
             alert("Login Successfull");
