@@ -21,7 +21,7 @@ function Register(){
     // // save in localStorage (temporary)
     // localStorage.setItem("user", JSON.stringify(user));
     // alert("Registered Successfully!");
-    axios.post("http://localhost:5000/api/auth/register", user)
+    axios.post("https://ecommerce-backend-oc9b.onrender.com/api/auth/register", user)
     .then((res) =>{
         alert("Registered Successfully");
         navigate("/login");
