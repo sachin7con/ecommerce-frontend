@@ -20,7 +20,7 @@ function Cart({ cart, setCart }) {
   const handlePayment = async () => {
     try {
       // 1. Create Order on Backend
-      const { data: order } = await axios.post("http://localhost:5000/api/payment/create-order", {
+      const { data: order } = await axios.post("https://ecommerce-backend-oc9b.onrender.com/api/payment/create-order", {
         amount: total,
       });
 
@@ -34,7 +34,7 @@ function Cart({ cart, setCart }) {
         order_id: order.id,
         handler: async function (response) {
           // 3. Verify Payment
-          const { data } = await axios.post("http://localhost:5000/api/payment/verify", response);
+          const { data } = await axios.post("https://ecommerce-backend-oc9b.onrender.com/api/payment/verify", response);
           if (data.success) {
             alert("Payment Successful!");
             setCart([]); // Clear cart
