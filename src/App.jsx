@@ -10,13 +10,14 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 
 function App() {
+      const token = localStorage.getItem("token");
+      
       const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem("cart");
+        const savedCart = localStorage.getItem(`cart_${token}`);
         return savedCart ? JSON.parse(savedCart) : [];
       });  
 
-      const token = localStorage.getItem("token");
-
+      
       useEffect(() =>{
         if(token){localStorage.setItem(`cart_${token}`, JSON.stringify(cart));
       }
