@@ -1,61 +1,124 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Navbar({ cart = [] }) {
-  const token = localStorage.getItem("token");
+import { useSelector, useDispatch } from "react-redux";
 
-  let userEmail = "";
+import { logout } from "../features/auth/authSlice";
 
-  if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      userEmail = payload.email;
-    } catch (err) {}
-  }
+function Navbar() {
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { cartItems } = useSelector(
+    (state) => state.cart
+  );
+
+  const { token } = useSelector(
+    (state) => state.auth
+  );
+
+  const cartCount = cartItems.reduce(
+    (total, item) => total + item.qty,
+    0
+  );
 
   function handleLogout() {
-    localStorage.removeItem("token");
-    alert("Logged out");
-    window.location.reload();
+
+    dispatch(logout());
+
+    navigate("/login");
   }
 
   return (
-    <nav style={styles.nav}>
-      <h2 style={{ color: "#2c3e50" }}>🛒 E-Shop</h2>
+    <nav className="bg-white shadow-md sticky top-0 z-50">
 
-      <div style={styles.links}>
-        <Link to="/">Home</Link>
-        <Link to="/product">Products</Link>
-        <Link to="/cart">Cart ({cart.length})</Link>
+      <div className="max-w-7xl mx-auto px-4">
 
-        {token ? (
-          <>
-            <span style={{ color: "green" }}>👤 {userEmail}</span>
-            <button onClick={handleLogout}>Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
+        <div className="flex justify-between items-center h-16">
+
+          {/* LOGO */}
+          <Link
+            to="/"
+            className="text-2xl font-bold text-blue-600"
+          >
+            MyEKart
+          </Link>
+
+          {/* SEARCH */}
+          <div className="hidden md:flex flex-1 mx-10">
+
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full border rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+            />
+
+          </div>
+
+          {/* MENU */}
+          <div className="flex items-center gap-5">
+
+            <Link
+              to="/"
+              className="hover:text-blue-600"
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/product"
+              className="hover:text-blue-600"
+            >
+              Products
+            </Link>
+
+            <Link
+              to="/cart"
+              className="relative hover:text-blue-600"
+            >
+              🛒 Cart
+
+              {cartCount > 0 && (
+                <span className="absolute -top-3 -right-4 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
+            {!token ? (
+              <>
+                <Link
+                  to="/login"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-50"
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Logout
+              </button>
+            )}
+
+          </div>
+
+        </div>
+
       </div>
+
     </nav>
   );
 }
-
-const styles = {
-  nav: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "15px 30px",
-    background: "#f8f9fa",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-  },
-  links: {
-    display: "flex",
-    gap: "15px",
-    alignItems: "center",
-  },
-};
 
 export default Navbar;

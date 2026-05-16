@@ -10,37 +10,73 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 
 function App() {
-      const token = localStorage.getItem("token");
-      
-      const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem(`cart_${token}`);
-        return savedCart ? JSON.parse(savedCart) : [];
-      });  
 
-      
-      useEffect(() =>{
-        if(token){localStorage.setItem(`cart_${token}`, JSON.stringify(cart));
-      }
-        
-      }, [cart, token]);
+  const token = localStorage.getItem("token");
+
+  const [cart, setCart] = useState(() => {
+
+    const savedCart = token
+      ? localStorage.getItem(`cart_${token}`)
+      : localStorage.getItem("cart");
+
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  useEffect(() => {
+
+    if (token) {
+      localStorage.setItem(
+        `cart_${token}`,
+        JSON.stringify(cart)
+      );
+    } else {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+      );
+    }
+
+  }, [cart, token]);
 
   return (
     <>
       <BrowserRouter>
-      <Navbar cart={cart} />
 
-      <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/product" element={<Product cart={cart} setCart={setCart} />}></Route>
-      <Route path="/cart" element={
-        <ProtectedRoute> <Cart cart={cart} setCart={setCart} />
-        </ProtectedRoute>}></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
-      </Routes>
+        <Navbar cart={cart} />
+
+        <Routes>
+
+          <Route
+            path="/"
+            element={<Home />}
+          />
+
+          <Route
+            path="/product"
+            element={
+              <Product
+                cart={cart}
+                setCart={setCart}
+              />
+            }
+          />
+
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <Cart
+                  cart={cart}
+                  setCart={setCart}
+                />
+              </ProtectedRoute>
+            }
+          />
+
+        </Routes>
+
       </BrowserRouter>
     </>
-  )
+  );
 }
-
 export default App

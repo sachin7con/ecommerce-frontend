@@ -1,53 +1,111 @@
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
+function Register() {
 
+  const navigate = useNavigate();
 
-function Register(){
-        const navigate = useNavigate(); 
-        const [user, setUser] = useState({
-            email: "",
-            password: "",
-        },)
+  const [loading, setLoading] = useState(false);
 
-    function handleChange(e){
-        setUser({...user, [e.target.name]: e.target.value })
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  function handleChange(e) {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  async function handleSubmit(e) {
+
+    e.preventDefault();
+
+    try {
+
+      setLoading(true);
+
+      await axios.post(
+        "https://ecommerce-backend-oc9b.onrender.com/api/auth/register",
+        user
+      );
+
+      toast.success("Registration successful");
+
+      navigate("/login");
+
+    } catch (error) {
+
+      toast.error("Registration failed");
+
+    } finally {
+
+      setLoading(false);
     }
+  }
 
-    function handleSubmit(e){
-        e.preventDefault();
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-5">
 
-    // // save in localStorage (temporary)
-    // localStorage.setItem("user", JSON.stringify(user));
-    // alert("Registered Successfully!");
-    axios.post("https://ecommerce-backend-oc9b.onrender.com/api/auth/register", user)
-    .then((res) =>{
-        alert("Registered Successfully");
-        navigate("/login");
-    }).catch((err) =>{
-        console.log(err.messege);
-        alert("Error while Registering user");
-    })
-          
+      <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md">
 
-    }
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Create Account 🚀
+        </h2>
 
-    return(
-        <div>
-            <form onSubmit={handleSubmit}>
-            <h2>Register</h2>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
 
-            
-            <input type="email" name="email" placeholder="Enter email id" value={user.email} onChange={handleChange}></input>
-            <input type="password" name="password" placeholder="Enter Password" value={user.password} onChange={handleChange}></input>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            value={user.email}
+            onChange={handleChange}
+            className="w-full border px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+          />
 
-            <button type="submit">Register</button>
-            </form>
-        
-        
-        </div>
-    )
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value={user.password}
+            onChange={handleChange}
+            className="w-full border px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition"
+          >
+            {loading ? "Processing..." : "Register"}
+          </button>
+
+        </form>
+
+        <p className="text-center mt-6 text-gray-600">
+
+          Already have an account?
+
+          <Link
+            to="/login"
+            className="text-blue-600 ml-1"
+          >
+            Login
+          </Link>
+
+        </p>
+
+      </div>
+
+    </div>
+  );
 }
 
 export default Register;

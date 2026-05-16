@@ -1,63 +1,113 @@
-import {useState} from "react";
+import { useState } from "react";
 import axios from "axios";
-import {useNavigate}  from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
+function Login() {
 
-function Login(){
-    const navigate = useNavigate();
-    const [loginData, setLoginData] = useState({
-        email: "",
-        password: "",
-    })
+  const navigate = useNavigate();
 
-    function handleChange(e){
-        setLoginData({...loginData, 
-            [e.target.name]: e.target.value },
-        )}
+  const [loading, setLoading] = useState(false);
 
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
 
-    function handleSubmit(e){
-        e.preventDefault();
+  function handleChange(e) {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value,
+    });
+  }
 
-        ////Local storage 
-        // const storedUser = JSON.parse(localStorage.getItem("user"));
-        // if(storedUser && 
-        //     storedUser.email === loginData.email &&
-        //     storedUser.password === loginData.password
-        // ){
-        //     alert("Login Successfull");
-        // }else {
-        //     alert("Invalid credentials")
-        // }
+  async function handleSubmit(e) {
 
-        axios.post("https://ecommerce-backend-oc9b.onrender.com/api/auth/login", loginData)
-        .then((res)=>{
-            localStorage.setItem("token", res.data.token) // token stored
-            alert("Login Successfull");
-            navigate("/");
-        }).catch((err) =>{
-            alert("invalid credentials")
-        });
+    e.preventDefault();
+
+    try {
+
+      setLoading(true);
+
+      const res = await axios.post(
+        "https://ecommerce-backend-oc9b.onrender.com/api/auth/login",
+        loginData
+      );
+
+      localStorage.setItem("token", res.data.token);
+
+      toast.success("Login successful");
+
+      navigate("/");
+
+    } catch (error) {
+
+      toast.error("Invalid credentials");
+
+    } finally {
+
+      setLoading(false);
     }
+  }
 
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-5">
 
+      <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md">
 
-    return(
-        <>
-        <div>
-        <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <input type="email" name="email" placeholder="Enter email" value={loginData.email} onChange={handleChange}></input>
-        <input type="password" name="password" placeholder="password" value={loginData.password} onChange={handleChange}></input>
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Welcome Back 👋
+        </h2>
 
-        <button type="submit">Login</button>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            value={loginData.email}
+            onChange={handleChange}
+            className="w-full border px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            value={loginData.password}
+            onChange={handleChange}
+            className="w-full border px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition"
+          >
+            {loading ? "Processing..." : "Login"}
+          </button>
+
         </form>
 
+        <p className="text-center mt-6 text-gray-600">
 
-        </div>
-        
-        </>
-    )
+          Don’t have an account?
+
+          <Link
+            to="/register"
+            className="text-blue-600 ml-1"
+          >
+            Register
+          </Link>
+
+        </p>
+
+      </div>
+
+    </div>
+  );
 }
 
 export default Login;
